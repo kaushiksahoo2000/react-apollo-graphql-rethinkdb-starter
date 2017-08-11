@@ -6,6 +6,20 @@ import {
 import { resolvers } from './resolvers';
 
 const typeDefs = `
+
+type Person {
+	age: Int
+	contactInfo: ContactInfo
+	id: String
+	interests: [String!]!
+	name: String
+}
+
+type ContactInfo {
+	email: String
+	phone: String
+}
+
 type Channel {
   id: ID!                # "!" denotes a required field
   name: String
@@ -24,8 +38,9 @@ type Message {
 
 # This type specifies the entry points into our API
 type Query {
-  channels: [Channel]    # "[]" means this is a list of channels
-  channel(id: ID!): Channel
+	people: [Person]
+	channels: [Channel]    # "[]" means this is a list of channels
+	channel(id: ID!): Channel
 }
 
 # The mutation root type, used to define all mutations

@@ -28,14 +28,19 @@ let nextMessageId = 5;
 const pubsub = new PubSub();
 
 export const resolvers = {
-  Query: {
-    channels: () => {
-      return channels;
-    },
-    channel: (root, { id }) => {
-      return channels.find(channel => channel.id === id);
-    },
-  },
+	Query: {
+		people: (root, data, {rethinkdb: {people}}) => {
+			console.log('people query, people: ', people)
+			return people
+			// return People()
+		},
+		channels: () => {
+			return channels;
+		},
+		channel: (root, { id }) => {
+			return channels.find(channel => channel.id === id);
+		},
+	},
   Mutation: {
     addChannel: (root, args) => {
       const newChannel = { id: String(nextId++), messages: [], name: args.name };

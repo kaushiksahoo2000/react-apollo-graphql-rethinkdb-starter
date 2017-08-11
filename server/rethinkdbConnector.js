@@ -1,18 +1,39 @@
 import rethinkdb from 'rethinkdb'
 
+let connection = null;
+let peopleArray = null;
+
 const rethinkdbConnector = async () => {
 	console.log('rethinkdbConnector.js ', 'inside async call')
+
 	await rethinkdb.connect({host: 'localhost', port: 28015}).then(function(conn) {
 		//You are now connected to the database
 		console.log('SUCCESSFULLY CONNECTED TO RETHINKDB')
-		rethinkdb.db('myDb').table('people').run(conn).then(function(result) {
-			console.log('database: myDb, table: people, result: ', {result})
-		})
+		connection = conn
 	}).error(function(error) {
 		//Something bad happened
 		console.log('ERROR CONNECTING TO RETHINKDB rethinkdb.connect error: ', {error})
 	})
+
+	await rethinkdb.db('myDb').table('people').run(connection, function(err, cursor) {
+		if (err) {
+			throw err
+		}
+		cursor.toArray(function(err, result) {
+			if (err) {
+				throw err
+			}
+			// console.log(JSON.stringify(result));
+			console.log(result)
+			// console.log(typeof result)
+			peopleArray = result
+		})
+	})
+
 	console.log('rethinkdbConnector.js ', 'after await rethinkdb connect call')
+	return {
+		people: peopleArray
+	}
 }
 
 export default rethinkdbConnector
