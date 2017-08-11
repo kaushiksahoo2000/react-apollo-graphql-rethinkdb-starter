@@ -15,24 +15,28 @@ const rethinkdbConnector = async () => {
 		console.log('ERROR CONNECTING TO RETHINKDB rethinkdb.connect error: ', {error})
 	})
 
-	await rethinkdb.db('myDb').table('people').run(connection, function(err, cursor) {
-		if (err) {
-			throw err
-		}
-		cursor.toArray(function(err, result) {
+	const peopleTable = () =>  {
+		rethinkdb.db('myDb').table('people').run(connection, function(err, cursor) {
 			if (err) {
 				throw err
 			}
-			// console.log(JSON.stringify(result));
-			console.log(result)
-			// console.log(typeof result)
-			peopleArray = result
+			cursor.toArray(function(err, result) {
+				if (err) {
+					throw err
+				}
+				// console.log(JSON.stringify(result));
+				// console.log(result)
+				// console.log(typeof result)
+				peopleArray = result
+			})
 		})
-	})
+		console.log('inside peopleTable function', {peopleArray})
+		return peopleArray
+	}
 
 	console.log('rethinkdbConnector.js ', 'after await rethinkdb connect call')
 	return {
-		people: peopleArray
+		people: () => peopleTable()
 	}
 }
 

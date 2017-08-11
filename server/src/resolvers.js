@@ -30,9 +30,8 @@ const pubsub = new PubSub();
 export const resolvers = {
 	Query: {
 		people: (root, data, {rethinkdb: {people}}) => {
-			console.log('people query, people: ', people)
-			return people
-			// return People()
+			// console.log('people query, people: ', people())
+			return people()
 		},
 		channels: () => {
 			return channels;

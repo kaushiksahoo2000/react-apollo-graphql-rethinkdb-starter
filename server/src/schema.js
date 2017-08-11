@@ -11,7 +11,7 @@ type Person {
 	age: Int
 	contactInfo: ContactInfo
 	id: String
-	interests: [String!]!
+	interests: [String]
 	name: String
 }
 
