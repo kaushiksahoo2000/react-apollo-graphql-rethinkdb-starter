@@ -8,6 +8,7 @@ import {
 
 import './App.css';
 import ChannelsListWithData from './components/ChannelsListWithData';
+import PeopleList from './components/PeopleList'
 import NotFound from './components/NotFound';
 import ChannelDetails from './components/ChannelDetails';
 
@@ -65,7 +66,8 @@ class App extends Component {
           <div className="App">
             <Link to="/" className="navbar">React - GraphQL - Apollo - RethinkDB - Express Starter</Link>
             <Switch>
-              <Route exact path="/" component={ChannelsListWithData}/>
+					<Route exact path="/" component={PeopleList}/>
+              <Route exact path="/channels" component={ChannelsListWithData}/>
               <Route path="/channel/:channelId" component={ChannelDetails}/>
               <Route component={ NotFound }/>
             </Switch>
