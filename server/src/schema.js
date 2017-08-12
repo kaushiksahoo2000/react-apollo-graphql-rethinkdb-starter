@@ -20,40 +20,22 @@ type ContactInfo {
 	phone: String
 }
 
-type Channel {
-  id: ID!                # "!" denotes a required field
-  name: String
-  messages: [Message]!
-}
-
-input MessageInput{
-  channelId: ID!
-  text: String
-}
-
-type Message {
-  id: ID!
-  text: String
-}
-
 # This type specifies the entry points into our API
 type Query {
 	people: [Person]
-	channels: [Channel]    # "[]" means this is a list of channels
-	channel(id: ID!): Channel
 }
 
 # The mutation root type, used to define all mutations
-type Mutation {
-  addChannel(name: String!): Channel
-  addMessage(message: MessageInput!): Message
-}
+# type Mutation {
+
+# }
 
 # The subscription root type, specifying what we can subscribe to
 type Subscription {
-  messageAdded(channelId: ID!): Message
+  personAdded: Person
 }
-`;
+
+`
 
 const schema = makeExecutableSchema({ typeDefs, resolvers });
 export { schema };

@@ -5,12 +5,9 @@ import {
   Route,
   Switch,
 } from 'react-router-dom';
-
 import './App.css';
-import ChannelsListWithData from './components/ChannelsListWithData';
 import PeopleList from './components/PeopleList'
 import NotFound from './components/NotFound';
-import ChannelDetails from './components/ChannelDetails';
 
 import {
   ApolloClient,
@@ -37,25 +34,9 @@ const networkInterfaceWithSubscriptions = addGraphQLSubscriptions(
   wsClient
 );
 
-function dataIdFromObject (result) {
-  if (result.__typename) {
-    if (result.id !== undefined) {
-      return `${result.__typename}:${result.id}`;
-    }
-  }
-  return null;
-}
-
 const client = new ApolloClient({
   networkInterface: networkInterfaceWithSubscriptions,
-  customResolvers: {
-    Query: {
-      channel: (_, args) => {
-        return toIdValue(dataIdFromObject({ __typename: 'Channel', id: args['id'] }))
-      },
-    },
-  },
-  dataIdFromObject,
+  customResolvers: {},
 });
 
 class App extends Component {
@@ -67,8 +48,6 @@ class App extends Component {
             <Link to="/" className="navbar">React - GraphQL - Apollo - RethinkDB - Express Starter</Link>
             <Switch>
 					<Route exact path="/" component={PeopleList}/>
-              <Route exact path="/channels" component={ChannelsListWithData}/>
-              <Route path="/channel/:channelId" component={ChannelDetails}/>
               <Route component={ NotFound }/>
             </Switch>
           </div>

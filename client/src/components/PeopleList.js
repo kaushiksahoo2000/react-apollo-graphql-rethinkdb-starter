@@ -1,25 +1,28 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { gql, graphql } from 'react-apollo';
 
-const PeopleList = ({ data: {loading, error, people }}) => {
-	console.log('PeopleList.js', {loading, error, people})
-	if (loading) {
-     return <p>Loading ...</p>;
-   }
-   if (error) {
-     return <p>{error.message}</p>;
-   }
 
-	return (
-		<div className="peopleList">
-			{ people.map( person =>
-			(<div key={person.id}>
-			   {person.name}
-			</div>)
-			)}
-			{/* Hello There from PeopleList.js */}
-		</div>
-	)
+class PeopleList extends Component {
+	render() {
+		const { data: {loading, error, people } } = this.props
+
+		if (loading) {
+			return <p>Loading ...</p>
+		}
+	   if (error) {
+	     return <p>{error.message}</p>;
+	   }
+
+		return (
+			<div className="peopleList">
+				{ people.map( person =>
+				(<div key={person.id}>
+				   {person.name}
+				</div>)
+				)}
+			</div>
+		)
+	}
 }
 
 export const peopleListQuery = gql`
