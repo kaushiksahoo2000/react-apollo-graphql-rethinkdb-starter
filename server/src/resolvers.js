@@ -1,4 +1,5 @@
-import { PubSub, withFilter } from 'graphql-subscriptions';
+import { PubSub, withFilter } from 'graphql-subscriptions'
+import rethinkdb from 'rethinkdb'
 
 const pubsub = new PubSub();
 
@@ -7,6 +8,10 @@ export const resolvers = {
 		people: (root, data, {rethinkdb: {people}}) => {
 			// console.log('people query, people: ', people())
 			return people()
+		},
+		peopleChanges: (root, data, {rethinkdb: {peopleChanges}}) => {
+			// console.log('people query, people: ', people())
+			return peopleChanges()
 		},
 	},
   // Mutation: {
@@ -37,4 +42,11 @@ export const resolvers = {
   //     }),
   //   }
   // },
+  Subscription: {
+	  personAdded: {
+		  subscribe: () => {
+
+		  }
+	  }
+  }
 };

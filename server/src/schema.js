@@ -23,6 +23,7 @@ type ContactInfo {
 # This type specifies the entry points into our API
 type Query {
 	people: [Person]
+	peopleChanges: [Person]
 }
 
 # The mutation root type, used to define all mutations

@@ -1,7 +1,8 @@
 import rethinkdb from 'rethinkdb'
 
-let connection = null;
-let peopleArray = null;
+let connection = null
+let peopleArray = null
+let peopleChanges = null
 
 const rethinkdbConnector = async () => {
 	console.log('rethinkdbConnector.js ', 'inside async call')
@@ -15,7 +16,7 @@ const rethinkdbConnector = async () => {
 		console.log('ERROR CONNECTING TO RETHINKDB rethinkdb.connect error: ', {error})
 	})
 
-	const peopleTable = () =>  {
+	const peopleTable = () => {
 		rethinkdb.db('myDb').table('people').run(connection, function(err, cursor) {
 			if (err) {
 				throw err
@@ -30,13 +31,26 @@ const rethinkdbConnector = async () => {
 				peopleArray = result
 			})
 		})
-		console.log('inside peopleTable function', {peopleArray})
+		// console.log('inside peopleTable function', {peopleArray})
 		return peopleArray
+	}
+
+	const peopleTableChanges = () => {
+		console.log('INSIDE PEOPLE TABLE CHANGES')
+		rethinkdb.db('myDb').table('people').changes().run(connection, function(err, cursor){
+			if (err) throw err
+			cursor.each(function(err, row) {
+				if (err) throw err
+				console.log('INSIDE CHANGEFEED FROM RETHINKDB CONNECTOR', JSON.stringify(row, null, 2))
+			})
+		})
+		return peopleChanges
 	}
 
 	console.log('rethinkdbConnector.js ', 'after await rethinkdb connect call')
 	return {
-		people: () => peopleTable()
+		people: () => peopleTable(),
+		peopleChanges: () => peopleTableChanges()
 	}
 }
 
